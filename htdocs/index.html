@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fox Movies</title>
+
+    <link rel="stylesheet" href="client/utilitaires/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="client/css/pagination.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="client/css/style.css">
+
+    <script src="client/utilitaires/jquery-3.6.3.min.js"></script>
+    <script src="client/utilitaires/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="client/utilitaires/pagination.min.js"></script>
+    <script src="client/models/films.js"></script>
+    <script src="client/js/gestionFilms.js"></script>
+
+</head>
+<body onLoad="initPage();">
+    <!-- Barre de navigation -->
+        <nav class="navbar navbar-expand-md nav-bg-perso">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img id="idlogo" src="client/images/logo.png"
+                    onclick="document.getElementById('selListerPar').value=''; getElementById('critere').value='';
+                    getElementById('mesCategs').value=''; rechercherFilms()">
+                <i class="fa fa-refresh fa-fw" title="Reinitialiser page"
+                   onclick="document.getElementById('selListerPar').value=''; getElementById('critere').value='';
+                    getElementById('mesCategs').value=''; rechercherFilms()"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!--SELECT DES TRIS CROISSANT ET DECROISSANT-->
+                        <li class="nav-item dropdown">
+                            <select id="selListerPar">
+                            </select> 
+                        </li>
+                        <!--BARRE DE RECHERCHE-->
+                        <li class="nav-item">
+                            <div class="input-group mb-3 marge-ajoute">
+                                <input type="text" class="form-control" id="critere" placeholder="Critere de recherche"
+                                 aria-label="Critere de recherche" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                  <button class="input-group-text" id="basic-addon2" onclick="rechercherFilms()";>Rechercher</span>
+                                </div>
+                              </div>
+                        </li>
+                        <!--SELECT DE LA LISTE DES CATEGORIES-->
+                        <li class="nav-item">
+                            <select id="mesCategs">
+                            </select> 
+                        </li>
+    
+                        <li class="nav-item" >
+                            <div id="pagination-container" style="margin-top:13px;width: 130%;">
+                                <!-- the pagination controls will be put here by pagination.js -->
+                            </div>
+                        </li>
+                        <!--BOUTON AJOUTER NOUVEAU FILM / MODAL-->
+                        <li class="nav-item">
+                            <button style="margin-left:30px;" type="button" id="AjouterFilmBtn" class="btn btn-secondary" 
+                                data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="afficherFormulaireVide()">
+                                <span class="fa fa-2x fa-plus-square" title="ajouter un film"></span> <span> Ajouter</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <!-- Fin de la barre de navigation -->
+    <br/>
+    
+    
+    <div id="contenu" class="container">   
+    </div>
+ 
+    <div id="pagination-container">
+        <!-- the pagination controls will be put here by pagination.js -->
+    </div>
+
+    <!-- Modal Suppression--><!--Pour la boite de confirmation modale-->
+    <div class="modal fade" id="supprconfirmation" tabindex="-1" role="dialog" aria-labelledby="supprconfirmationTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Confirmez votre action:</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <p>Êtes-vous sûr de vouloir enlever ce film ?</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+            <button type="button" class="btn btn-info" data-bs-dismiss="modal" onclick="remove()">Oui</button>
+            </div>
+        </div>
+        </div>
+    </div> 
+
+    <!--Formulaire en modal pour ajouter nouveau films-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nouveau film</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fermer">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="filmid">
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Titre</label>
+                        <input type="text"  class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="year" class="col-form-label">Année</label>
+                        <input type="text"  class="form-control" id="year">
+                    </div>
+                    <div class="form-group">
+                        <label for="runtime" class="col-form-label">Durée</label>
+                        <input type="number" class="form-control" id="runtime">
+                    </div>
+                    <div class="form-group">
+                        <label for="genres" class="col-form-label">Genres</label>
+                        <input type="text" class="form-control" id="genres">
+                    </div>
+                    <div class="form-group">
+                        <label for="director" class="col-form-label">Directeur</label>
+                        <input type="text" class="form-control" id="director">
+                    </div>
+                    <div class="form-group">
+                        <label for="actors" class="col-form-label">Acteurs</label>
+                        <input type="text" class="form-control" id="actors">
+                    </div>
+                    <div class="form-group">
+                        <label for="plot" class="col-form-label">Résumé</label>
+                        <input type="text" class="form-control" id="plot">
+                    </div>
+                    <div class="form-group">
+                        <label for="posterUrl" class="col-form-label">Url de l'affiche</label>
+                        <input type="text" class="form-control" id="posterUrl">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Fermer</button>
+                <button type="button" id="btnCreer" class="btn btn-info" data-bs-dismiss="modal" onclick="creerNouveauFilm()">Creer</button>
+                <button type="button" id="btnModif" class="btn btn-info" data-bs-dismiss="modal" onclick="modifierFilm()">Modifier</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--POUR GERER LES INPUT DU CHAMP ANNÉE QUAND ON AJOUTE L'ANNÉE D'UN FILM-->
+    <script>
+        $("#year").datepicker({
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years",
+    autoclose:true //to close picker once year is selected
+    });
+    </script>
+</body>
+</html>

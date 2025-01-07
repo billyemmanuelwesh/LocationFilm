@@ -1,0 +1,129 @@
+.card
+{
+    flex-direction: row !important;
+}
+
+body
+{
+    background-color: black;
+    background-image: url("../images/fonds.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+@media (max-width: 900px) {
+    .card
+    {
+        flex-direction: column !important;
+    }
+}
+.navbar-nav{
+    float: left !important;
+    margin: -5px;
+    width: 100%;
+}
+
+.card-actors{
+    color: rgb(230, 207, 0);
+    font-style: italic;
+    font-size: small;
+    font-weight: 400;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#idlogo {
+    max-width: 75px;
+    max-height: 75px;
+}
+.nav-bg-perso{
+    background-color: rgb(0, 96, 103) !important;
+    border-radius: 5px 5px;
+}
+
+.card-style{
+    padding: 5px;  
+    background-color: #444444BB;
+    margin:10px;
+    color:aliceblue;
+    border:1px solid grey;
+} 
+.card-style:nth-child(4n-1),.card-style:nth-child(4n){
+   
+    background-color: #888888BB;
+   
+}  
+
+
+
+select{
+    border-color: none;
+    margin-top: 9px;
+}
+.nav-link{
+color: black;
+font-weight : bolder;
+}
+
+.btn-danger{
+    margin: 10px;
+    width: 150px;
+}
+.card-img-top{ 
+    border-radius: 10px 10px;
+    width: 8em;
+    height: 13em;
+    min-height: 8em; 
+ } 
+.card-plot{
+    font-size: small;
+}
+.card-genres{
+    font-size: small;
+    font-weight: 500;
+}
+.card-year{
+    color: black;
+    padding-right: 1em;
+    padding-left: 3em;
+}
+.card-runtime{
+    padding-right: 2em;
+}
+.card-runtime::after{
+    content:" mins"
+}
+.card-img-side
+{
+    margin-right:10px;
+}
+.card-title{
+    font-size: medium;
+    color: rgb(229, 234, 167)!important;
+}
+.card-plot{
+    color: rgb(229, 234, 167);
+    padding-right: 13em;
+    padding-left: 4em;
+}
+.card-actors{
+    padding-right: 50px;
+    padding-left: 10px;
+}
+.card-year, .card-runtime, .card-genres{
+    color: white;
+}
+.d-md-block{
+    float: right;
+}
+.nav-item{
+    margin: 10px;
+    min-width: 100px;
+}
+.marge-ajoute
+{
+    margin-top : 9px !important;
+}
+.fa{
+    color:rgb(135, 225, 247);
+}
